@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'ionic-conference-app',
+  name: 'cssday-conference-app',
   proxies: null,
 
   // hooks execute before or after all project-related Ionic commands
@@ -9,8 +9,8 @@ module.exports = {
   // The format is 'before' or 'after' + commandName (uppercased)
   // ex: beforeServe, afterRun, beforePrepare, etc.
   hooks: {
-    // beforeServe: function(argv) {
-    //   console.log('Arguments to ionic serve: "' + argv._ + '"');
-    // }
+    beforeServe: function(argv) {
+      console.log('Arguments to CSSDay.io serve: "' + argv._ + '"');
+    }
   }
 }
