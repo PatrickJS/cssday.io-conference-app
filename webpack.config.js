@@ -1,4 +1,15 @@
 var path = require('path');
+var webpack = require('webpack');
+var sliceArgs = Function.prototype.call.bind(Array.prototype.slice);
+var toString  = Function.prototype.call.bind(Object.prototype.toString);
+var NODE_ENV  = process.env.NODE_ENV || 'development';
+var pkg = require('./package.json');
+
+var OccurenceOrderPlugin = webpack.optimize.OccurenceOrderPlugin;
+var CommonsChunkPlugin   = webpack.optimize.CommonsChunkPlugin;
+var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
+var DedupePlugin   = webpack.optimize.DedupePlugin;
+var DefinePlugin   = webpack.DefinePlugin;
 
 var autoprefixerOptions = {
   browsers: [
@@ -12,16 +23,21 @@ var autoprefixerOptions = {
 }
 
 module.exports = {
-  entry: [
-    "es6-shim",
-    "reflect-metadata",
-    "web-animations.min",
-    "moment",
-    "zone.js",
-    path.join(__dirname, 'www', 'app', 'app.js')
-  ],
+  entry: {
+    vendor:   [
+      "es6-shim",
+      "reflect-metadata",
+      "web-animations.min",
+      "moment",
+      "zone.js",
+      "angular2/angular2",
+      "angular2/http",
+      "angular2/router"
+    ],
+    app: root('www', 'app', 'app.js')
+  },
   output: {
-    path: path.join(__dirname, 'www', 'build', 'js'),
+    path: root('www', 'build', 'js'),
     filename: 'app.bundle.js',
     publicPath: 'build/js/'
     //pathinfo: true // show module paths in the bundle, handy for debugging
@@ -30,14 +46,21 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        loader: "awesome-typescript-loader?doTypeCheck=false&useWebpackText=true",
-        include: [path.join(__dirname, 'www')],
+        loader: "awesome-typescript",
+        query: {
+          'doTypeCheck': false,
+          'useWebpackText': true
+        },
+        include: [root('www')],
         exclude: /node_modules/
       },
       {
         test: /\.ts$/,
-        loader: "awesome-typescript-loader",
-        include: [path.join(__dirname, 'www')],
+        loader: "awesome-typescript",
+        query: {
+          'useWebpackText': true
+        },
+        include: [root('www')],
         exclude: /node_modules/
       },
       {
@@ -46,7 +69,7 @@ module.exports = {
       },
       // Any png-image or woff-font below or equal to 100K will be converted
       // to inline base64 instead
-      { test: /\.(png|woff|ttf)(\?.*)?$/, loader: 'url-loader?limit=1000000' }
+      { test: /\.(png|woff|ttf)(\?.*)?$/, loader: 'url', query: { 'limit': 1000000} }
     ]
   },
   resolve: {
@@ -63,7 +86,32 @@ module.exports = {
   // https://github.com/jtangelder/sass-loader#sass-options
   sassLoader: {
     includePaths: [
-      path.resolve(__dirname, "node_modules", 'ionic-framework', 'dist', 'src', 'scss')
+      rootNode('ionic-framework', 'dist', 'src', 'scss')
     ]
-  }
+  },
+
+  plugins: [
+    new OccurenceOrderPlugin(),
+    new DedupePlugin(),
+    new CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: Infinity,
+      filename: 'vendor.bundle.js'
+    }),
+  ]
 };
+
+
+function getBanner() {
+  return 'Angular2 Webpack Starter v'+ pkg.version +' by @gdi2990 from @AngularClass';
+}
+
+function root(args) {
+  args = sliceArgs(arguments, 0);
+  return path.join.apply(path, [__dirname].concat(args));
+}
+
+function rootNode(args) {
+  args = sliceArgs(arguments, 0);
+  return root.apply(path, ['node_modules'].concat(args));
+}
