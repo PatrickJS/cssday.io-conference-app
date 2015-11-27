@@ -1,27 +1,17 @@
 [
   {
-    "name": "ionic",
-    "displayName": "Ionic",
+    "name": "layout-components",
+    "displayName": "Layout & Components",
     "showFilter": true
   },
   {
-    "name": "angular",
-    "displayName": "Angular",
+    "name": "resets",
+    "displayName": "Resets",
     "showFilter": true
   },
   {
-    "name": "communication",
-    "displayName": "Communication",
-    "showFilter": true
-  },
-  {
-    "name": "tooling",
-    "displayName": "Tooling",
-    "showFilter": true
-  },
-  {
-    "name": "services",
-    "displayName": "Services",
+    "name": "animation",
+    "displayName": "Animation",
     "showFilter": true
   },
   {
@@ -30,8 +20,13 @@
     "showFilter": true
   },
   {
-    "name": "workshop",
-    "displayName": "Workshop",
+    "name": "processors",
+    "displayName": "Pre/Post Processors",
+    "showFilter": true
+  },
+  {
+    "name": "responsive",
+    "displayName": "Presponsive",
     "showFilter": true
   },
   {
@@ -40,13 +35,13 @@
     "showFilter": true
   },
   {
-    "name": "documentation",
-    "displayName": "Documentation",
+    "name": "contest",
+    "displayName": "Contest",
     "showFilter": true
   },
   {
-    "name": "navigation",
-    "displayName": "Navigation",
+    "name": "party",
+    "displayName": "Party",
     "showFilter": true
   }
 ]
